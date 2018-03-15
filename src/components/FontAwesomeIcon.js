@@ -4,11 +4,14 @@ import log from '../logger'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-function objectWithKey (key, value) {
-  return ((Array.isArray(value) && value.length > 0) || (!Array.isArray(value) && value)) ? {[key]: value} : {}
+function objectWithKey(key, value) {
+  return (Array.isArray(value) && value.length > 0) ||
+    (!Array.isArray(value) && value)
+    ? { [key]: value }
+    : {}
 }
 
-function classList (props) {
+function classList(props) {
   let classes = {
     'fa-spin': props.spin,
     'fa-pulse': props.pulse,
@@ -23,11 +26,11 @@ function classList (props) {
   }
 
   return Object.keys(classes)
-    .map(key => classes[key] ? key : null)
+    .map(key => (classes[key] ? key : null))
     .filter(key => key)
 }
 
-function normalizeIconArgs (icon) {
+function normalizeIconArgs(icon) {
   if (icon === null) {
     return null
   }
@@ -41,16 +44,24 @@ function normalizeIconArgs (icon) {
   }
 
   if (typeof icon === 'string') {
-    return { prefix: 'fas', iconName: icon }
+    return { prefix: fontawesome.config.defaultPrefix || 'fas', iconName: icon }
   }
 }
 
-function FontAwesomeIcon (props) {
+function FontAwesomeIcon(props) {
   const { icon: iconArgs, mask: maskArgs, symbol, className } = props
 
   const icon = normalizeIconArgs(iconArgs)
-  const classes = objectWithKey('classes', [...classList(props), ...className.split(' ')])
-  const transform = objectWithKey('transform', (typeof props.transform === 'string') ? fontawesome.parse.transform(props.transform) : props.transform)
+  const classes = objectWithKey('classes', [
+    ...classList(props),
+    ...className.split(' ')
+  ])
+  const transform = objectWithKey(
+    'transform',
+    typeof props.transform === 'string'
+      ? fontawesome.parse.transform(props.transform)
+      : props.transform
+  )
   const mask = objectWithKey('mask', normalizeIconArgs(maskArgs))
 
   const renderedIcon = fontawesome.icon(icon, {
@@ -65,12 +76,13 @@ function FontAwesomeIcon (props) {
     return null
   }
 
-  const {abstract} = renderedIcon
+  const { abstract } = renderedIcon
   const convertCurry = convert.bind(null, React.createElement)
   const extraProps = {}
 
   Object.keys(props).forEach(key => {
-    if (!FontAwesomeIcon.defaultProps.hasOwnProperty(key)) extraProps[key] = props[key]
+    if (!FontAwesomeIcon.defaultProps.hasOwnProperty(key))
+      extraProps[key] = props[key]
   })
 
   return convertCurry(abstract[0], extraProps)
@@ -81,13 +93,21 @@ FontAwesomeIcon.propTypes = {
 
   className: PropTypes.string,
 
-  mask: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+  mask: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+    PropTypes.string
+  ]),
 
   fixedWidth: PropTypes.bool,
 
   flip: PropTypes.oneOf(['horizontal', 'vertical', 'both']),
 
-  icon: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
+  icon: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+    PropTypes.string
+  ]),
 
   listItem: PropTypes.bool,
 
@@ -99,7 +119,21 @@ FontAwesomeIcon.propTypes = {
 
   rotation: PropTypes.oneOf([90, 180, 270]),
 
-  size: PropTypes.oneOf(['lg', 'xs', 'sm', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x']),
+  size: PropTypes.oneOf([
+    'lg',
+    'xs',
+    'sm',
+    '1x',
+    '2x',
+    '3x',
+    '4x',
+    '5x',
+    '6x',
+    '7x',
+    '8x',
+    '9x',
+    '10x'
+  ]),
 
   spin: PropTypes.bool,
 
