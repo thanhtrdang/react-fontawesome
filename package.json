@@ -21,7 +21,7 @@
     "lint": "eslint src",
     "prettier": "pretty-quick src --staged",
     "precommit": "npm run lint && npm run prettier",
-    "prepack": "npm run dist",
+    "prepack": "npm run build",
     "test": "jest"
   },
   "peerDependencies": {
