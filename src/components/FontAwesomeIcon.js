@@ -44,7 +44,27 @@ function normalizeIconArgs(icon) {
   }
 
   if (typeof icon === 'string') {
-    return { prefix: fontawesome.config.defaultPrefix || 'fas', iconName: icon }
+    return parseIconName(icon, fontawesome.config.defaultPrefix)
+  }
+}
+
+const supportedPrefixes = ['fas', 'far', 'fal', 'fab']
+function parseIconName(name, defaultPrefix) {
+  defaultPrefix = defaultPrefix || supportedPrefixes[0]
+
+  const indexOfFirstHyphen = name.indexOf('-')
+  const prefix = name.slice(0, indexOfFirstHyphen)
+
+  if (supportedPrefixes.includes(prefix)) {
+    return {
+      prefix: prefix,
+      iconName: name.slice(indexOfFirstHyphen + 1)
+    }
+  } else {
+    return {
+      prefix: defaultPrefix,
+      iconName: name
+    }
   }
 }
 

@@ -517,9 +517,26 @@
     }
 
     if (typeof icon === 'string') {
+      return parseIconName(icon, fontawesome.config.defaultPrefix)
+    }
+  }
+
+  var supportedPrefixes = ['fas', 'far', 'fal', 'fab']
+  function parseIconName(name, defaultPrefix) {
+    defaultPrefix = defaultPrefix || supportedPrefixes[0]
+
+    var indexOfFirstHyphen = name.indexOf('-')
+    var prefix = name.slice(0, indexOfFirstHyphen)
+
+    if (supportedPrefixes.includes(prefix)) {
       return {
-        prefix: fontawesome.config.defaultPrefix || 'fas',
-        iconName: icon
+        prefix: prefix,
+        iconName: name.slice(indexOfFirstHyphen + 1)
+      }
+    } else {
+      return {
+        prefix: defaultPrefix,
+        iconName: name
       }
     }
   }
